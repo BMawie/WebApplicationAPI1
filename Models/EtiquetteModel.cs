@@ -1,0 +1,25 @@
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace WebApplicationAPI1.Models
+{
+    public class EtiquetteModel
+    {
+        [Required]
+        [StringLength(100, MinimumLength = 2)]
+        public String Name { get; set; }
+        [Required]
+        public String CodeBarre { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsComplete { get; set; }
+        public int Poids { get; set; }
+        public int Quantite { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime DateReception { get; set; }
+        public DateTime DateCreation { get; set; } = DateTime.Now;
+
+        public LocationModel Location { get; set; }
+    }
+}
