@@ -1,7 +1,6 @@
 ﻿using System;
-using WebApplicationAPI1.Data.Entities;
 
-namespace WebApplicationAPI1.Models
+namespace WebApplicationAPI1.Data.Entities
 {
     public class Etiquette
     {

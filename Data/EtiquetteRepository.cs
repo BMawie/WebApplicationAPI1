@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplicationAPI1.Models;
+using WebApplicationAPI1.Data.Entities;
 
 namespace WebApplicationAPI1.Data
 {
@@ -42,7 +42,7 @@ namespace WebApplicationAPI1.Data
         {
             _logger.LogInformation($"Getting all Etiquettes");
 
-            IQueryable<Etiquette> query = _context.Etiquettes;
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
 
             // Tri
             query = query.OrderByDescending(c => c.DateCreation)
@@ -55,7 +55,7 @@ namespace WebApplicationAPI1.Data
         {
             _logger.LogInformation($"Getting all Etiquettes");
 
-            IQueryable<Etiquette> query = _context.Etiquettes;
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
 
             // Tri par défaut
             query = query.OrderByDescending(c => c.DateCreation);
@@ -64,24 +64,23 @@ namespace WebApplicationAPI1.Data
         }
 
 
-        public async Task<Etiquette[]> GetEtiquettesByIdAsync(long id)
+        public async Task<Etiquette> GetEtiquettesByIdAsync(long id)
         {
-            _logger.LogInformation($"Getting all Etiquette par code barre");
+            _logger.LogInformation($"Getting all Etiquette par ID");
 
-            IQueryable<Etiquette> query = _context.Etiquettes;
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
 
             // Add Query
             query = query
-              .Where(t => t.Id.Equals(id))
-              .OrderByDescending(t => t.DateCreation);
+              .Where(t => t.Id.Equals(id));
 
-            return await query.ToArrayAsync();
+            return await query.FirstOrDefaultAsync();
         }
         public async Task<Etiquette[]> GetEtiquettesByCodeBarreAsync(string codeBarre)
         {
             _logger.LogInformation($"Getting all Etiquette par code barre");
 
-            IQueryable<Etiquette> query = _context.Etiquettes;
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
 
             // Add Query
             query = query
@@ -94,7 +93,7 @@ namespace WebApplicationAPI1.Data
         {
             _logger.LogInformation($"Getting all Etiquette par pays de location");
 
-            IQueryable<Etiquette> query = _context.Etiquettes;
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
 
             // Add Query
             query = query

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using WebApplicationAPI1.Data;
 using WebApplicationAPI1.Models;
 
@@ -25,6 +26,9 @@ namespace WebApplicationAPI1
             services.AddDbContext<EtiquetteContext>(opt => opt.UseInMemoryDatabase("EtiquetteList"));
             services.AddScoped<EtiquetteRepository>();
             services.AddControllers();
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplicationAPI1", Version = "v1", Description = "Mon application test d'APIs" });

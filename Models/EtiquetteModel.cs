@@ -6,6 +6,7 @@ namespace WebApplicationAPI1.Models
 {
     public class EtiquetteModel
     {
+        public long Id { get; set; }
         [Required]
         [StringLength(100, MinimumLength = 2)]
         public String Name { get; set; }

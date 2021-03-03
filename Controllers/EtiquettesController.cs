@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplicationAPI1.Data;
+using WebApplicationAPI1.Data.Entities;
 using WebApplicationAPI1.Models;
 
 namespace WebApplicationAPI1.Controllers
@@ -16,21 +18,24 @@ namespace WebApplicationAPI1.Controllers
     public class EtiquettesController : ControllerBase
     {
         private readonly EtiquetteRepository _repository;
+        private readonly IMapper _mapper;
 
-        public EtiquettesController(EtiquetteRepository repository)
+        public EtiquettesController(EtiquetteRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         // GET: api/Etiquettes
         [HttpGet]
-        public async Task<IActionResult> GetEtiquettes()
+        public async Task<ActionResult<EtiquetteModel[]>> GetEtiquettes()
         {
             try
             {
                 var results = await _repository.GetAllEtiquettesAsync();
+                EtiquetteModel[] models = _mapper.Map<EtiquetteModel[]>(results);
 
-                return Ok(results);
+                return Ok(models);
             }
             catch (Exception)
             {
@@ -85,12 +90,13 @@ namespace WebApplicationAPI1.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Etiquette>> PostEtiquette(Etiquette Etiquette)
+        public async Task<ActionResult<EtiquetteModel>> PostEtiquette(EtiquetteModel model)
         {
-            _repository.Add(Etiquette);
+            var etiquette = _mapper.Map<Etiquette>(model);
+            _repository.Add(etiquette);
             await _repository.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetEtiquette), new { id = Etiquette.Id }, Etiquette);
+            return CreatedAtAction(nameof(GetEtiquette), new { id = etiquette.Id }, _mapper.Map<EtiquetteModel>(etiquette));
         }
 
         /// <summary>

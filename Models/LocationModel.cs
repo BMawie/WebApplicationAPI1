@@ -6,7 +6,6 @@ namespace WebApplicationAPI1.Models
     {
         public long Id { get; set; }
         public string Nom { get; set; }
-        [Required]
         public string Adresse1 { get; set; }
         public string Adresse2 { get; set; }
         public string Ville { get; set; }

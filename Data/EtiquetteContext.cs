@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplicationAPI1.Data.Entities;
 
-namespace WebApplicationAPI1.Models
+namespace WebApplicationAPI1.Data
 {
     public class EtiquetteContext : DbContext
     {
