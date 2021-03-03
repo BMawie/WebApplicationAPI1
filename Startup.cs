@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using WebApplicationAPI1.Controllers.Extensions;
 using WebApplicationAPI1.Data;
-using WebApplicationAPI1.Models;
 
 namespace WebApplicationAPI1
 {
@@ -27,8 +27,9 @@ namespace WebApplicationAPI1
             services.AddScoped<EtiquetteRepository>();
             services.AddControllers();
 
+            // Utilisation des DTOs et non pas des entities directement
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplicationAPI1", Version = "v1", Description = "Mon application test d'APIs" });
@@ -44,10 +45,8 @@ namespace WebApplicationAPI1
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplicationAPI1 v1"));
             }
-            else
-            {
-                app.UseExceptionHandler("/error");
-            }
+            // Utilisation d'une gestion globale des exceptions
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseHttpsRedirection();
 

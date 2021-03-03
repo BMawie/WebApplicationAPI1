@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using WebApplicationAPI1.Controllers.Filter;
+using WebApplicationAPI1.Controllers.Wrapper;
 using WebApplicationAPI1.Data;
 using WebApplicationAPI1.Data.Entities;
 using WebApplicationAPI1.Models;
@@ -28,24 +28,21 @@ namespace WebApplicationAPI1.Controllers
 
         // GET: api/Etiquettes
         [HttpGet]
-        public async Task<ActionResult<EtiquetteModel[]>> GetEtiquettes()
+        public async Task<ActionResult<EtiquetteModel[]>> GetEtiquettes([FromQuery] PaginationFilter filter, String pays = null)
         {
-            try
-            {
-                var results = await _repository.GetAllEtiquettesAsync();
-                EtiquetteModel[] models = _mapper.Map<EtiquetteModel[]>(results);
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-                return Ok(models);
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Error lors de la requête à la base de données");
-            }
+            // Pays est un optional query string => /api/etiquettes?pays=Chine
+            var results = await _repository.GetEtiquettesByPaysAsync(pays, validFilter);
+
+            EtiquetteModel[] models = _mapper.Map<EtiquetteModel[]>(results);
+
+            return Ok(new PagedResponse<EtiquetteModel[]>(models, filter.PageNumber, filter.PageSize));
         }
 
         // GET: api/Etiquettes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Etiquette>> GetEtiquette(long id)
+        public async Task<ActionResult<EtiquetteModel>> GetEtiquette(long id)
         {
             var Etiquette = await _repository.GetEtiquettesByIdAsync(id);
 
@@ -54,20 +51,22 @@ namespace WebApplicationAPI1.Controllers
                 return NotFound();
             }
 
-            return Ok(Etiquette);
+            return _mapper.Map<EtiquetteModel>(Etiquette);
         }
 
         // PUT: api/Etiquettes/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEtiquette(long id, Etiquette Etiquette)
+        public async Task<IActionResult> PutEtiquette(long id, EtiquetteModel model)
         {
-            if (id != Etiquette.Id)
+            var oldEtiquette = await _repository.GetEtiquettesByIdAsync(id);
+            if (id != model.Id || oldEtiquette == null)
             {
                 return BadRequest();
             }
 
             try
             {
+                _mapper.Map(model, oldEtiquette);
                 await _repository.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

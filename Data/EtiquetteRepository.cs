@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplicationAPI1.Controllers.Filter;
 using WebApplicationAPI1.Data.Entities;
 
 namespace WebApplicationAPI1.Data
@@ -89,18 +90,24 @@ namespace WebApplicationAPI1.Data
 
             return await query.ToArrayAsync();
         }
-        public async Task<Etiquette[]> GetEtiquettesByPaysAsync(string pays)
+        public async Task<Etiquette[]> GetEtiquettesByPaysAsync(string pays, PaginationFilter filter)
         {
             _logger.LogInformation($"Getting all Etiquette par pays de location");
 
             IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
 
             // Add Query
-            query = query
-              .Where(t => t.Location.Pays == pays)
-              .OrderByDescending(t => t.DateCreation);
+            if (pays == null)
+                query = query.OrderByDescending(t => t.DateCreation);
+            else
+                query = query
+                  .Where(t => t.Location.Pays == pays)
+                    .OrderByDescending(t => t.DateCreation);
 
-            return await query.ToArrayAsync();
+            return await query
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToArrayAsync();
         }
 
         public bool EtiquetteExists(long id)

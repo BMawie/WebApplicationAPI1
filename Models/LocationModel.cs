@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace WebApplicationAPI1.Models
+﻿namespace WebApplicationAPI1.Models
 {
     public class LocationModel
     {
