@@ -8,7 +8,9 @@ namespace WebApplicationAPI1.Data
     {
         public EtiquetteProfile()
         {
-            this.CreateMap<Etiquette, EtiquetteModel>().ReverseMap();
+            this.CreateMap<Etiquette, EtiquetteModel>()
+                .ForMember(dest => dest.ZoneCode, opt => opt.MapFrom(src => src.Zone.Code))
+                .ReverseMap();
             this.CreateMap<Location, LocationModel>().ReverseMap();
         }
     }

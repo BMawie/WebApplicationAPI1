@@ -12,5 +12,6 @@ namespace WebApplicationAPI1.Data
 
         public DbSet<Etiquette> Etiquettes { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Zone> Zones { get; set; }
     }
 }

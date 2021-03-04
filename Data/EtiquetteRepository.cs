@@ -43,7 +43,7 @@ namespace WebApplicationAPI1.Data
         {
             _logger.LogInformation($"Getting all Etiquettes");
 
-            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location).Include(c => c.Zone);
 
             // Tri
             query = query.OrderByDescending(c => c.DateCreation)
@@ -56,7 +56,7 @@ namespace WebApplicationAPI1.Data
         {
             _logger.LogInformation($"Getting all Etiquettes");
 
-            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location).Include(c => c.Zone);
 
             // Tri par défaut
             query = query.OrderByDescending(c => c.DateCreation);
@@ -69,7 +69,7 @@ namespace WebApplicationAPI1.Data
         {
             _logger.LogInformation($"Getting all Etiquette par ID");
 
-            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location).Include(c => c.Zone);
 
             // Add Query
             query = query
@@ -81,7 +81,7 @@ namespace WebApplicationAPI1.Data
         {
             _logger.LogInformation($"Getting all Etiquette par code barre");
 
-            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location).Include(c => c.Zone);
 
             // Add Query
             query = query
@@ -94,7 +94,7 @@ namespace WebApplicationAPI1.Data
         {
             _logger.LogInformation($"Getting all Etiquette par pays de location");
 
-            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location);
+            IQueryable<Etiquette> query = _context.Etiquettes.Include(c => c.Location).Include(c => c.Zone);
 
             // Add Query
             if (pays == null)

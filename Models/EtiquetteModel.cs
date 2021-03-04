@@ -15,11 +15,13 @@ namespace WebApplicationAPI1.Models
 
         [DefaultValue(false)]
         public bool IsComplete { get; set; }
-        public int Poids { get; set; }
+        public float Poids { get; set; }
         public int Quantite { get; set; }
         [DataType(DataType.Date)]
         public DateTime DateReception { get; set; }
         public DateTime DateCreation { get; set; } = DateTime.Now;
+
+        public String ZoneCode { get; set; }
 
         public LocationModel Location { get; set; }
     }

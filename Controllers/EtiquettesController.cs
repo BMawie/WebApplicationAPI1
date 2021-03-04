@@ -37,7 +37,7 @@ namespace WebApplicationAPI1.Controllers
 
             EtiquetteModel[] models = _mapper.Map<EtiquetteModel[]>(results);
 
-            return Ok(new PagedResponse<EtiquetteModel[]>(models, filter.PageNumber, filter.PageSize));
+            return Ok(new PagedResponse<EtiquetteModel[]>(models, models.Length, filter.PageNumber, filter.PageSize));
         }
 
         // GET: api/Etiquettes/5
