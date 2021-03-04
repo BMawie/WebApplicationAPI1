@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -10,11 +9,9 @@ namespace WebApplicationAPI1.Controllers.Extensions
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger _logger;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger logger)
+        public ExceptionMiddleware(RequestDelegate next)
         {
-            _logger = logger;
             _next = next;
         }
 
@@ -26,7 +23,7 @@ namespace WebApplicationAPI1.Controllers.Extensions
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong: {ex}");
+                // _logger.LogError($"Something went wrong: {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }

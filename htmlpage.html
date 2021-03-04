@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Test d'une API</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <span id="data" class="list-unstyled"></span>
+
+    <script>
+        axios.get('https://api.openweathermap.org/data/2.5/weather?q=LYON&appid=f67d802f8bda3a68749eb4b21fb5e566')
+            .then(response => {
+                console.log(response.data);
+                document.getElementById('data').innerHTML = "<pre>" + JSON.stringify(response.data, null, 2) + "</pre>";
+            })
+            .catch(error => console.error(error));
+    </script>
+</body>
+</html>
